@@ -6,6 +6,9 @@ var voidFunc = @encode(void());
 var objSelFunc = @encode(void(id, SEL));
 var classSelFunc = @encode(void(Class, SEL));
 
+typedef char *charp;
+var charFunc = @encode(void(charp));
+
 var handle = dlopen("/usr/lib/libinspectivec.dylib", RTLD_NOW);
 
 var setMaximumRelativeLoggingDepth = intFunc(dlsym(handle, "InspectiveC_setMaximumRelativeLoggingDepth"));
@@ -30,3 +33,5 @@ var enableCompleteLogging = voidFunc(dlsym(handle, "InspectiveC_enableCompleteLo
 var disableCompleteLogging = voidFunc(dlsym(handle, "InspectiveC_disableCompleteLogging"));
 
 var flushLogFile = voidFunc(dlsym(handle, "InspectiveC_flushLogFile"));
+
+var dumpClass = charFunc(dlsym(handle, "InspectiveC_dumpMethodListOfClassName"));

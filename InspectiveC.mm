@@ -293,8 +293,31 @@ extern "C" void InspectiveC_flushLogFile() {
 }
 
 // All class dump
-extern "C" void InspectiveC_allClassDump() {
+extern "C" void InspectiveC_dumpMethodListOfClassName(char *name) {
+    const char *documentDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0] UTF8String];
     
+    Class clazz = objc_getClass(name);
+    
+    char path[250];
+    sprintf(path, "%s/InspectiveC", documentDirectory);
+    mkdir(path, 0755);
+    sprintf(path, "%s/InspectiveC/%s.h", documentDirectory, class_getName(clazz));
+    
+    FILE * file = fopen(path, "a");
+    
+    if (file == NULL) {
+        NSLog(@"[InspectiveC] can not create dump header at path: %s", path);
+        return;
+    }
+    
+    unsigned int numMethods = 0;
+    Method *methods = class_copyMethodList(clazz, &numMethods);
+    for (int i = 0; i < numMethods; i++) {
+        fprintf(file, "%s\n", sel_getName(method_getName(methods[i])));
+    }
+    free(methods);
+    
+    fclose(file);
 }
 
 // Shared functions.

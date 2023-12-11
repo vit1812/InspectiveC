@@ -44,6 +44,8 @@ void InspectiveC_disableLogging();
 void InspectiveC_enableCompleteLogging();
 void InspectiveC_disableCompleteLogging();
 
+// All class dump
+void InspectiveC_dumpMethodListOfClassName(char *name);
 
 // Flushes the log file for the current thread.
 void InspectiveC_flushLogFile();
